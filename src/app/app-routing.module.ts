@@ -11,7 +11,16 @@ const routes: Routes = [
     loadChildren: () => import('./protected/pages/new-room/new-room.module').then(m => m.NewRoomModule)
   },
   {
+    path: 'rooms/:id',
+    loadChildren: () => import('./protected/pages/room/room.module').then(m => m.RoomModule)
+  },
+  {
     path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
+  },
+  {
+    path: '**',
     redirectTo: 'home',
     pathMatch: 'full'
   }
