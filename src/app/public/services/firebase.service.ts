@@ -4,7 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase/app';
 
 import { AuthUser } from 'src/app/public/models';
-import { StorageUtil } from 'src/app/public/utils';
+import { StorageUtil, AlertUtil } from 'src/app/public/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +27,7 @@ export class FirebaseService {
             const { displayName, photoURL, uid } = result.user;
 
             if (!displayName || !photoURL) {
-              window.alert('Faltam informações da sua conta no Google.');
+              AlertUtil.errorAlert('Faltam informações da sua conta no Google.')
               this.signOut();
               return;
             }
@@ -45,6 +45,7 @@ export class FirebaseService {
         })
         .catch(error => {
           reject(error);
+          AlertUtil.errorAlert('Não foi possível realizar o login na sua conta Google.')
         })
 
     });
