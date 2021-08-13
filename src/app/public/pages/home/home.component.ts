@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { FirebaseService } from 'src/app/public/services/firebase.service';
 import { StorageUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
-
+import { AuthUser } from 'src/app/public/models';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -11,17 +11,19 @@ import { StorageUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils'
 })
 export class HomeComponent implements OnInit {
 
+  user: AuthUser;
+
   constructor(
     private firebaseService: FirebaseService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
+    this.lookingForUserInStorage();
   }
 
   async signIn() {
-    const user = this.lookingForUserInStorage();
-    if (!user) {
+    if (!this.user) {
       await this.firebaseService.signInWithGoogle();
     }
     this.goToNewRoom();
@@ -29,6 +31,7 @@ export class HomeComponent implements OnInit {
 
   signOut() {
     this.firebaseService.signOut();
+    this.user = undefined;
   }
 
   goToNewRoom() {
@@ -36,8 +39,10 @@ export class HomeComponent implements OnInit {
   }
 
   lookingForUserInStorage() {
-    const user = StorageUtil.getValueFromStorage(APP_NAME_STORAGE);
-    return user;
+    const storageData = StorageUtil.getValueFromStorage(APP_NAME_STORAGE);
+    if (storageData) {
+      this.user = storageData.auth;
+    }
   }
 
 }

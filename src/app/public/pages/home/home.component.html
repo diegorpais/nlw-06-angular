@@ -15,8 +15,8 @@
       <form>
         <input type="text" placeholder="Digite o codigo da sala">
         <button class="button" type="button"> Entrar na sala </button>
-        <p>
-          Bem vindo de volta, Diego.
+        <p *ngIf="user">
+          Bem vindo de volta, <strong>{{user.name}}</strong>.
           <a (click)="signOut()">Fazer Logoff</a>
         </p>
       </form>
