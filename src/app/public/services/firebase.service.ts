@@ -4,7 +4,7 @@ import { AngularFireAuth } from '@angular/fire/auth';
 import firebase from 'firebase/app';
 
 import { AuthUser } from 'src/app/public/models';
-import { StorageUtil, AlertUtil } from 'src/app/public/utils';
+import { StorageUtil, AlertUtil, APP_NAME_STORAGE } from 'src/app/public/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +38,7 @@ export class FirebaseService {
               avatar: photoURL
             }
 
-            StorageUtil.setValueToStorage('@LETMEASK', { auth: userLogged });
+            StorageUtil.setValueToStorage(APP_NAME_STORAGE, { auth: userLogged });
             resolve(userLogged);
           }
 
@@ -54,7 +54,7 @@ export class FirebaseService {
 
   signOut() {
     this.auth.signOut();
-    StorageUtil.removeValueFromStorage('@LETMEASK');
+    StorageUtil.removeValueFromStorage(APP_NAME_STORAGE);
   }
 
 }

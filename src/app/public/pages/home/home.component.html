@@ -14,7 +14,11 @@
       <div class="separator">ou entre em uma sala</div>
       <form>
         <input type="text" placeholder="Digite o codigo da sala">
-        <button class="button" type="button" (click)="signOut()"> Entrar na sala </button>
+        <button class="button" type="button"> Entrar na sala </button>
+        <p>
+          Bem vindo de volta, Diego.
+          <a (click)="signOut()">Fazer Logoff</a>
+        </p>
       </form>
     </div>
   </main>
