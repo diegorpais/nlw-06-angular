@@ -3,7 +3,8 @@ import { AngularFireAuth } from '@angular/fire/auth';
 
 import firebase from 'firebase/app';
 
-import { AuthUser } from '../models';
+import { AuthUser } from 'src/app/public/models';
+import { StorageUtil } from 'src/app/public/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +38,8 @@ export class FirebaseService {
               avatar: photoURL
             }
 
+            StorageUtil.setValueToStorage('@LETMEASK', { auth: userLogged });
             resolve(userLogged);
-
           }
 
         })
@@ -52,6 +53,7 @@ export class FirebaseService {
 
   signOut() {
     this.auth.signOut();
+    StorageUtil.removeValueFromStorage('@LETMEASK');
   }
 
 }

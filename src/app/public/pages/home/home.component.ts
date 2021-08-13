@@ -21,4 +21,8 @@ export class HomeComponent implements OnInit {
     // rotear para pagina correta
   }
 
+  signOut() {
+    this.firebaseService.signOut();
+  }
+
 }
