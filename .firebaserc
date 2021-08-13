@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "letmeask-a366c": {
+      "hosting": {
+        "nlw06-angular": [
+          "letmeask-a366c"
+        ]
+      }
+    }
+  }
+}

@@ -121,8 +121,13 @@
               "devServerTarget": "nlw06-angular:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "nlw06-angular"
 }
