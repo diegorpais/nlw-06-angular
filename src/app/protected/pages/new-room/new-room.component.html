@@ -8,9 +8,9 @@
     <div class="main-content">
       <img src="assets/images/logo.svg" alt="Letmeask" />
       <h2>Criar uma nova Sala</h2>
-      <form>
-        <input type="text" placeholder="Nome da sala">
-        <button type="button" class="button"> Criar sala </button>
+      <form [formGroup]="newRoomForm" (ngSubmit)="createNewRoom()">
+        <input type="text" placeholder="Nome da sala" formControlName="className">
+        <button type="submit" class="button"> Criar sala </button>
         <p>
           Quer entrar em uma sala existente?
           <a (click)="backToHome()">Clique aqui</a>

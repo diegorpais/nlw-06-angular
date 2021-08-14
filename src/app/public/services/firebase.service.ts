@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { Router } from '@angular/router';
 
 import firebase from 'firebase/app';
 
 import { AuthUser } from 'src/app/public/models';
-import { StorageUtil, AlertUtil, APP_NAME_STORAGE } from 'src/app/public/utils';
+import { StorageUtil, AlertUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +14,9 @@ import { StorageUtil, AlertUtil, APP_NAME_STORAGE } from 'src/app/public/utils';
 export class FirebaseService {
 
   constructor(
-    public auth: AngularFireAuth
+    private auth: AngularFireAuth,
+    private database: AngularFireDatabase,
+    private router: Router
   ) { }
 
   signInWithGoogle(): Promise<AuthUser> {
@@ -55,6 +59,41 @@ export class FirebaseService {
   signOut() {
     this.auth.signOut();
     StorageUtil.removeValueFromStorage(APP_NAME_STORAGE);
+  }
+
+  async createNewRoom(newRoom: string) {
+
+    if (!newRoom) {
+      AlertUtil.errorAlert('Nome da sala é obrigatório.');
+      return;
+    }
+
+    const user = StorageUtil.getValueFromStorage(APP_NAME_STORAGE);
+
+    if (!user) {
+      AlertUtil.errorAlert('É preciso realizar o login com sua conta Google para criar uma sala.');
+      this.router.navigate([RootRoutes.HOME]);
+      return;
+    }
+
+    const roomRef = this.database.list('rooms');
+    roomRef.valueChanges();
+
+    const room = {
+      title: newRoom,
+      authorId: user.auth.id
+    }
+
+    await roomRef.push(room)
+      .then((res: any) => {
+        this.router.navigate([`rooms/${res.key}`]);
+      })
+      .catch((error) => {
+        console.log(error)
+        AlertUtil.errorAlert('Não foi possível criar a sala com sua conta Google.')
+      })
+
+
   }
 
 }
