@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
 
 import { FirebaseService } from 'src/app/public/services/firebase.service';
 import { StorageUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
@@ -12,10 +13,14 @@ import { AuthUser } from 'src/app/public/models';
 export class HomeComponent implements OnInit {
 
   user: AuthUser;
+  homeForm = this.fb.group({
+    idClass: ['']
+  });
 
   constructor(
     private firebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
+    private fb: FormBuilder
   ) { }
 
   ngOnInit(): void {
@@ -42,6 +47,13 @@ export class HomeComponent implements OnInit {
     const storageData = StorageUtil.getValueFromStorage(APP_NAME_STORAGE);
     if (storageData) {
       this.user = storageData.auth;
+    }
+  }
+
+  joinRoom() {
+    const idClass = this.homeForm.get('idClass').value;
+    if (idClass.trim() !== '') {
+      this.router.navigate([`${RootRoutes.ROOMS}/${idClass}`]);
     }
   }
 
