@@ -8,7 +8,7 @@ import { User } from '@firebase/auth-types';
 
 import firebase from 'firebase/app';
 
-import { AuthUser } from 'src/app/public/models';
+import { AuthUser, RoomInfo } from 'src/app/public/models';
 import { StorageUtil, AlertUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
 
 @Injectable({
@@ -113,6 +113,48 @@ export class FirebaseService {
         console.log(error)
         AlertUtil.errorAlert('Não foi possível criar a sala com sua conta Google.')
       })
+
+
+  }
+
+
+  getRoomInformation(roomId: string): Promise<RoomInfo> {
+
+    if (roomId.trim() === '') {
+      AlertUtil.errorAlert('Id da sala é obrigatório.');
+      return;
+    }
+
+    const roomRef = this.database.list(`rooms/${roomId}`);
+
+    return new Promise((resolve) => {
+      roomRef.snapshotChanges()
+        .subscribe(
+          res => {
+
+            if (!res.length) {
+              AlertUtil.errorAlert('Sala não existe. Verifique se o ID esta correto.');
+              return;
+            }
+
+            let roomInfo = new RoomInfo();
+
+            res.forEach(item => {
+              roomInfo[item.key] = item.payload.val();
+            });
+
+            resolve(roomInfo);
+
+          },
+          error => {
+            AlertUtil.errorAlert('Erro ao tentar obter informações da sala.');
+          }
+        );
+    });
+
+
+
+
 
 
   }

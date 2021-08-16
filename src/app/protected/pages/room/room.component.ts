@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { FirebaseService } from 'src/app/public/services/firebase.service';
 import { StorageUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
@@ -15,14 +15,17 @@ export class RoomComponent implements OnInit {
   isUserLoggedIn = false;
   user: AuthUser;
   loading = true;
+  title = '';
 
   constructor(
     private firebaseService: FirebaseService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
-    this.isLoggedIn()
+    this.isLoggedIn();
+    this.getRoomInformation();
   }
 
   isLoggedIn() {
@@ -54,6 +57,20 @@ export class RoomComponent implements OnInit {
 
   backHome() {
     this.router.navigate([RootRoutes.HOME]);
+  }
+
+  async getRoomInformation() {
+    const { roomState } = window.history.state;
+    const roomId = this.activatedRoute.snapshot.params['id'];
+
+    if (!roomState) {
+      const roomInfo = await this.firebaseService.getRoomInformation(roomId);
+      this.title = roomInfo.title;
+      return;
+    }
+
+    this.title = roomState.title;
+
   }
 
 }

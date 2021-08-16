@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
   }
 
   goToNewRoom() {
+
     this.router.navigate([RootRoutes.ROOMS_NEW]);
   }
 
@@ -50,10 +51,11 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  joinRoom() {
+  async joinRoom() {
     const idClass = this.homeForm.get('idClass').value;
-    if (idClass.trim() !== '') {
-      this.router.navigate([`${RootRoutes.ROOMS}/${idClass}`]);
+    const roomInfo = await this.firebaseService.getRoomInformation(idClass);
+    if (roomInfo) {
+      this.router.navigate([`${RootRoutes.ROOMS}/${idClass}`], { state: { roomState: roomInfo } });
     }
   }
 
