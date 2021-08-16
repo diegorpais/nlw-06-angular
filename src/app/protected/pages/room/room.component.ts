@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { FirebaseService } from 'src/app/public/services/firebase.service';
-import { StorageUtil, APP_NAME_STORAGE } from 'src/app/public/utils';
+import { StorageUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
 import { AuthUser } from 'src/app/public/models';
 
 @Component({
@@ -16,7 +17,8 @@ export class RoomComponent implements OnInit {
   loading = true;
 
   constructor(
-    private firebaseService: FirebaseService
+    private firebaseService: FirebaseService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -40,6 +42,18 @@ export class RoomComponent implements OnInit {
     if (dataStorage) {
       this.user = dataStorage.auth;
     }
+  }
+
+  async signIn() {
+    await this.firebaseService.signInWithGoogle()
+      .then(() => {
+        this.isUserLoggedIn = true;
+        this.checkUserOnStorage();
+      })
+  }
+
+  backHome() {
+    this.router.navigate([RootRoutes.HOME]);
   }
 
 }

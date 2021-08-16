@@ -3,13 +3,18 @@
   <header>
     <div class="content">
       <img src="assets/images/logo.svg" alt="Letmeask" />
-      <!-- COMPONENTIZAR -->
-      <button class="room-code">
-        <div>
-          <img src="assets/images/copy.svg" alt="Copy room code" />
-        </div>
-        <span>Sala #123456789</span>
-      </button>
+      <div>
+
+        <!-- COMPONENTIZAR -->
+        <button class="room-code">
+          <div>
+            <img src="assets/images/copy.svg" alt="Copy room code" />
+          </div>
+          <span>Sala #123456789</span>
+        </button>
+
+        <button class="button" type="button" (click)="backHome()">Sair da sala</button>
+      </div>
 
     </div>
   </header>
@@ -30,7 +35,10 @@
         </div>
 
         <ng-template #notLoggedIn>
-          <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
+          <span>Para enviar uma pergunta,
+            <button type="button" (click)="signIn()">
+              faça seu login
+            </button>.</span>
         </ng-template>
 
         <button class="button" type="button">Enviar pergunta</button>
