@@ -22,7 +22,7 @@
 
     <form>
       <textarea placeholder="O que você quer perguntar?"></textarea>
-      <div class="form-footer">
+      <div class="form-footer" *ngIf="!loading">
 
         <div class="user-info" *ngIf="isUserLoggedIn; else notLoggedIn">
           <img [src]="user.avatar" [alt]="user.name" />

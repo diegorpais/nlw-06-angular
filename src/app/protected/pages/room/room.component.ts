@@ -13,21 +13,26 @@ export class RoomComponent implements OnInit {
 
   isUserLoggedIn = false;
   user: AuthUser;
+  loading = true;
 
   constructor(
     private firebaseService: FirebaseService
   ) { }
 
   ngOnInit(): void {
-    this.checkUserOnStorage();
     this.isLoggedIn()
   }
 
   isLoggedIn() {
     this.firebaseService.isLoggedIn()
-      .subscribe(res => {
-        this.isUserLoggedIn = !!res;
-      });
+      .subscribe(
+        res => {
+          this.isUserLoggedIn = !!res;
+          this.checkUserOnStorage();
+          this.loading = false;
+        },
+        error => { this.loading = false; }
+      );
   }
 
   checkUserOnStorage() {
