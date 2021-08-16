@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { take, map } from 'rxjs/operators';
+import { User } from '@firebase/auth-types';
 
 import firebase from 'firebase/app';
 
@@ -28,22 +31,8 @@ export class FirebaseService {
         .then(result => {
 
           if (result.user) {
-            const { displayName, photoURL, uid } = result.user;
-
-            if (!displayName || !photoURL) {
-              AlertUtil.errorAlert('Faltam informações da sua conta no Google.')
-              this.signOut();
-              return;
-            }
-
-            const userLogged = {
-              id: uid,
-              name: displayName,
-              avatar: photoURL
-            }
-
-            StorageUtil.setValueToStorage(APP_NAME_STORAGE, { auth: userLogged });
-            resolve(userLogged);
+            const userInfo = this.getUserInformation(result.user);
+            resolve(userInfo);
           }
 
         })
@@ -59,6 +48,38 @@ export class FirebaseService {
   signOut() {
     this.auth.signOut();
     StorageUtil.removeValueFromStorage(APP_NAME_STORAGE);
+  }
+
+  isLoggedIn(): Observable<AuthUser> {
+    const user = this.auth.authState;
+    return user.pipe(
+      take(1),
+      map(authState => {
+        if (!!authState) {
+          return this.getUserInformation(authState);
+        }
+      })
+    );
+  }
+
+  getUserInformation(firebaseUser: User) {
+    const { displayName, photoURL, uid } = firebaseUser;
+
+    if (!displayName || !photoURL) {
+      AlertUtil.errorAlert('Faltam informações da sua conta no Google.')
+      this.signOut();
+      return;
+    }
+
+    const userLogged = {
+      id: uid,
+      name: displayName,
+      avatar: photoURL
+    }
+
+    StorageUtil.setValueToStorage(APP_NAME_STORAGE, { auth: userLogged });
+
+    return userLogged;
   }
 
   async createNewRoom(newRoom: string) {

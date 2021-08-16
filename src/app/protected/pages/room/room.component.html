@@ -23,7 +23,16 @@
     <form>
       <textarea placeholder="O que você quer perguntar?"></textarea>
       <div class="form-footer">
-        <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
+
+        <div class="user-info" *ngIf="isUserLoggedIn; else notLoggedIn">
+          <img [src]="user.avatar" [alt]="user.name" />
+          <span>{{user.name}}</span>
+        </div>
+
+        <ng-template #notLoggedIn>
+          <span>Para enviar uma pergunta, <button>faça seu login</button>.</span>
+        </ng-template>
+
         <button class="button" type="button">Enviar pergunta</button>
       </div>
     </form>
