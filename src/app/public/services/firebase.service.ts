@@ -8,7 +8,7 @@ import { User } from '@firebase/auth-types';
 
 import firebase from 'firebase/app';
 
-import { AuthUser, RoomInfo } from 'src/app/public/models';
+import { AuthUser, Question, RoomInfo } from 'src/app/public/models';
 import { StorageUtil, AlertUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
 
 @Injectable({
@@ -143,6 +143,8 @@ export class FirebaseService {
               roomInfo[item.key] = item.payload.val();
             });
 
+            console.log(roomInfo);
+
             resolve(roomInfo);
 
           },
@@ -152,11 +154,22 @@ export class FirebaseService {
         );
     });
 
-
-
-
-
-
   }
+
+  async sendQuestions(question: Question, roomId: string) {
+    const roomRef = this.database.list(`rooms/${roomId}/questions`);
+
+    return new Promise(async (resolve) => {
+      await roomRef.push(question)
+        .then(res => {
+          resolve(res.key);
+        })
+        .catch(_ => {
+          AlertUtil.errorAlert('Não foi possível enviar a sua pergunta.')
+        })
+
+    });
+  }
+
 
 }

@@ -17,8 +17,8 @@
       <span>3 pergunta(s)</span>
     </div>
 
-    <form>
-      <textarea placeholder="O que você quer perguntar?"></textarea>
+    <form [formGroup]="roomForm" (ngSubmit)="sendQuestion()">
+      <textarea placeholder="O que você quer perguntar?" formControlName="question"></textarea>
       <div class="form-footer" *ngIf="!loading">
 
         <div class="user-info" *ngIf="isUserLoggedIn; else notLoggedIn">
@@ -33,7 +33,7 @@
             </button>.</span>
         </ng-template>
 
-        <button class="button" type="button">Enviar pergunta</button>
+        <button class="button" type="submit" [disabled]="!isUserLoggedIn">Enviar pergunta</button>
       </div>
     </form>
 

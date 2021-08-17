@@ -40,7 +40,6 @@ export class HomeComponent implements OnInit {
   }
 
   goToNewRoom() {
-
     this.router.navigate([RootRoutes.ROOMS_NEW]);
   }
 

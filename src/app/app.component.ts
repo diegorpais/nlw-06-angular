@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.firebaseService.isLoggedIn();
+    this.firebaseService.isLoggedIn().subscribe();
   }
 
 
