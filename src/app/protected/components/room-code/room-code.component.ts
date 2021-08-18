@@ -1,5 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
 @Component({
   selector: 'app-room-code',
   templateUrl: './room-code.component.html',
@@ -7,9 +6,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoomCodeComponent implements OnInit {
 
+  @Input() roomCode: string;
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  copyRoomCodeToClipboard() {
+    navigator.clipboard.writeText(this.roomCode);
   }
 
 }

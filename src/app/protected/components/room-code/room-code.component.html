@@ -1,6 +1,6 @@
-<button class="room-code">
+<button class="room-code" (click)="copyRoomCodeToClipboard()" type="button">
   <div>
     <img src="assets/images/copy.svg" alt="Copy room code" />
   </div>
-  <span>Sala #123456789</span>
+  <span>Sala {{roomCode}}</span>
 </button>

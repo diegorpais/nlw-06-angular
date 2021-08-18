@@ -8,6 +8,10 @@
   cursor: pointer;
   display: flex;
 
+  transition-property: background-color;
+  transition-duration: 0.6s;
+  transition-timing-function: linear;
+
   div {
     background: #835afd;
     padding: 0 12px;
@@ -26,5 +30,10 @@
     font-size: 14px;
     font-weight: 14px;
     font-weight: 500;
+  }
+
+  &:active {
+    background-color: #835afd;
+    color: #fff;
   }
 }
