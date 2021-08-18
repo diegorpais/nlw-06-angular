@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { LoadingModule } from 'src/app/public/components/loading/loading.module';
 import { RoomCodeModule } from 'src/app/protected/components/room-code/room-code.module';
+import { QuestionModule } from 'src/app/protected/components/question/question.module';
 
 import { RoomComponent } from './room.component';
 
@@ -22,6 +23,7 @@ const routes: Routes = [
     RoomCodeModule,
     ReactiveFormsModule,
     LoadingModule,
+    QuestionModule,
     RouterModule.forChild(routes)
   ]
 })

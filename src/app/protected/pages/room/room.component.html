@@ -40,20 +40,7 @@
     </form>
 
     <div class="question-list" *ngIf="parsedQuestions.length > 0; else emptyQuestions">
-
-      <div class="question" *ngFor="let question of parsedQuestions">
-        <p>{{question.content}}</p>
-        <footer>
-          <div class="user-info">
-            <img [src]="question.author.avatar" alt="question.author.name" />
-            <span>{{question.author.name}}</span>
-          </div>
-          <div>
-
-          </div>
-        </footer>
-      </div>
-
+      <app-question [parsedQuestions]="parsedQuestions"></app-question>
     </div>
 
     <ng-template #emptyQuestions>
