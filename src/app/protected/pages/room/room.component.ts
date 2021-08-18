@@ -111,6 +111,7 @@ export class RoomComponent implements OnInit, OnDestroy {
               }
             });
 
+            this.parsedQuestions.reverse();
           }
 
           console.log('Questions: ', this.parsedQuestions);
