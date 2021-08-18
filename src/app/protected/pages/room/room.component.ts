@@ -105,7 +105,9 @@ export class RoomComponent implements OnInit, OnDestroy {
                 content: value.content,
                 author: value.author,
                 isHighLighted: value.isHighLighted,
-                isAnswered: value.isAnswered
+                isAnswered: value.isAnswered,
+                likeCount: Object.values(value.likes ? value.likes : {}).length,
+                likeId: Object.entries(value.likes ? value.likes : {}).find((like: any) => like[1]?.authorId === this.user?.id)?.[0]
               }
             });
 

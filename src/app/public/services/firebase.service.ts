@@ -8,7 +8,7 @@ import { User } from '@firebase/auth-types';
 
 import firebase from 'firebase/app';
 
-import { AuthUser, Question } from 'src/app/public/models';
+import { AuthUser, FirebaseQuestions } from 'src/app/public/models';
 import { StorageUtil, AlertUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
 
 @Injectable({
@@ -122,7 +122,7 @@ export class FirebaseService {
     return roomRef.snapshotChanges();
   }
 
-  async sendQuestions(question: Question, roomId: string) {
+  async sendQuestions(question: FirebaseQuestions, roomId: string) {
     const roomRef = this.database.list(`rooms/${roomId}/questions`);
 
     return new Promise(async (resolve) => {
@@ -135,6 +135,17 @@ export class FirebaseService {
         })
 
     });
+  }
+
+  async likeQuestions(user: AuthUser, questionId: string, roomId: string, likeId: string | undefined) {
+    if (likeId) {
+      await this.database.list(`rooms/${roomId}/questions/${questionId}/likes/${likeId}`).remove();
+    } else {
+      await this.database.list(`rooms/${roomId}/questions/${questionId}/likes`)
+        .push({
+          authorId: user.id,
+        });
+    }
   }
 
 

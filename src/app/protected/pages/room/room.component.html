@@ -40,7 +40,11 @@
     </form>
 
     <div class="question-list" *ngIf="parsedQuestions.length > 0; else emptyQuestions">
-      <app-question [parsedQuestions]="parsedQuestions"></app-question>
+      <app-question
+        [parsedQuestions]="parsedQuestions"
+        [roomId]="roomId"
+        [user]="user"
+      ></app-question>
     </div>
 
     <ng-template #emptyQuestions>
