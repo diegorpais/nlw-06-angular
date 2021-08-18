@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 
 import { FirebaseService } from 'src/app/public/services/firebase.service';
-import { StorageUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
+import { StorageUtil, APP_NAME_STORAGE, RootRoutes, AlertUtil } from 'src/app/public/utils';
 import { AuthUser } from 'src/app/public/models';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   user: AuthUser;
   homeForm = this.fb.group({
@@ -25,6 +25,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.lookingForUserInStorage();
+  }
+
+  ngOnDestroy() {
   }
 
   async signIn() {
@@ -52,10 +55,13 @@ export class HomeComponent implements OnInit {
 
   async joinRoom() {
     const idClass = this.homeForm.get('idClass').value;
-    const roomInfo = await this.firebaseService.getRoomInformation(idClass);
-    if (roomInfo) {
-      this.router.navigate([`${RootRoutes.ROOMS}/${idClass}`], { state: { roomState: roomInfo } });
+
+    if (idClass.trim() === '') {
+      AlertUtil.errorAlert('Id da sala é obrigatório.');
+      return;
     }
+
+    this.router.navigate([`${RootRoutes.ROOMS}/${idClass}`]);
   }
 
 }

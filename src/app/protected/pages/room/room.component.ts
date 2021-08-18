@@ -1,23 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 
 import { FirebaseService } from 'src/app/public/services/firebase.service';
 import { StorageUtil, APP_NAME_STORAGE, RootRoutes, AlertUtil } from 'src/app/public/utils';
-import { AuthUser } from 'src/app/public/models';
+import { AuthUser, RoomInfo } from 'src/app/public/models';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.scss']
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
 
-  isUserLoggedIn = false;
-  user: AuthUser;
   loading = true;
+  isUserLoggedIn = false;
   title = '';
+  parsedQuestions = [];
+  user: AuthUser;
+
   roomId: string;
+  roomInfo = new RoomInfo();
+  roomChanges: Subscription;
 
   roomForm = this.fb.group({
     question: ['']
@@ -34,6 +39,12 @@ export class RoomComponent implements OnInit {
     this.roomId = this.activatedRoute.snapshot.params['id'];
     this.isLoggedIn();
     this.getRoomInformation();
+  }
+
+  ngOnDestroy() {
+    if (this.roomChanges) {
+      this.roomChanges.unsubscribe();
+    }
   }
 
   isLoggedIn() {
@@ -67,17 +78,47 @@ export class RoomComponent implements OnInit {
     this.router.navigate([RootRoutes.HOME]);
   }
 
-  async getRoomInformation() {
-    const { roomState } = window.history.state;
+  getRoomInformation() {
 
-    if (!roomState) {
-      const roomInfo = await this.firebaseService.getRoomInformation(this.roomId);
-      this.title = roomInfo.title;
-      return;
-    }
+    this.roomChanges = this.firebaseService.getRoomInformation(this.roomId)
+      .subscribe(
+        res => {
 
-    this.title = roomState.title;
+          if (!res.length) {
+            AlertUtil.errorAlert('Sala não existe. Verifique se o ID esta correto.');
+            this.router.navigate([RootRoutes.HOME]);
+            return;
+          }
 
+          res.forEach(item => {
+            this.roomInfo[item.key] = item.payload.val();
+          });
+
+          this.title = this.roomInfo.title;
+
+          console.log('Observable: ', this.roomInfo);
+
+          if (this.roomInfo.questions) {
+            this.parsedQuestions = Object.entries(this.roomInfo.questions).map(([key, value]) => {
+              return {
+                id: key,
+                content: value.content,
+                author: value.author,
+                isHighLighted: value.isHighLighted,
+                isAnswered: value.isAnswered
+              }
+            });
+
+          }
+
+          console.log('Questions: ', this.parsedQuestions);
+
+        },
+        _ => {
+          AlertUtil.errorAlert('Erro ao tentar obter informações da sala.');
+          this.router.navigate([RootRoutes.HOME]);
+        }
+      );
   }
 
 

@@ -8,7 +8,7 @@ import { User } from '@firebase/auth-types';
 
 import firebase from 'firebase/app';
 
-import { AuthUser, Question, RoomInfo } from 'src/app/public/models';
+import { AuthUser, Question } from 'src/app/public/models';
 import { StorageUtil, AlertUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
 
 @Injectable({
@@ -117,43 +117,9 @@ export class FirebaseService {
 
   }
 
-
-  getRoomInformation(roomId: string): Promise<RoomInfo> {
-
-    if (roomId.trim() === '') {
-      AlertUtil.errorAlert('Id da sala é obrigatório.');
-      return;
-    }
-
+  getRoomInformation(roomId: string): Observable<any> {
     const roomRef = this.database.list(`rooms/${roomId}`);
-
-    return new Promise((resolve) => {
-      roomRef.snapshotChanges()
-        .subscribe(
-          res => {
-
-            if (!res.length) {
-              AlertUtil.errorAlert('Sala não existe. Verifique se o ID esta correto.');
-              return;
-            }
-
-            let roomInfo = new RoomInfo();
-
-            res.forEach(item => {
-              roomInfo[item.key] = item.payload.val();
-            });
-
-            console.log(roomInfo);
-
-            resolve(roomInfo);
-
-          },
-          error => {
-            AlertUtil.errorAlert('Erro ao tentar obter informações da sala.');
-          }
-        );
-    });
-
+    return roomRef.snapshotChanges();
   }
 
   async sendQuestions(question: Question, roomId: string) {
