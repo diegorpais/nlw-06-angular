@@ -14,7 +14,7 @@
   <main>
     <div class="room-title">
       <h1>Sala {{title}}</h1>
-      <span>3 pergunta(s)</span>
+      <span *ngIf="parsedQuestions.length > 0">{{parsedQuestions.length}} pergunta(s)</span>
     </div>
 
     <form [formGroup]="roomForm" (ngSubmit)="sendQuestion()">
@@ -37,17 +37,33 @@
       </div>
     </form>
 
-    <div class="question-list">
+    <div class="question-list" *ngIf="parsedQuestions.length > 0; else emptyQuestions">
+
+      <div class="question" *ngFor="let question of parsedQuestions">
+        <p>{{question.content}}</p>
+        <footer>
+          <div class="user-info">
+            <img [src]="question.author.avatar" alt="question.author.name" />
+            <span>{{question.author.name}}</span>
+          </div>
+          <div>
+
+          </div>
+        </footer>
+      </div>
 
     </div>
 
-    <div class="empty-questions">
-      <img src="assets/images/empty-questions.svg" alt="">
-      <strong>Nenhum pergunta por aqui...</strong>
-      <p style="color: #737380;">
-        Faça o seu login e seja a primeira pessoa a fazer uma pergunta!
-      </p>
-    </div>
+    <ng-template #emptyQuestions>
+      <div class="empty-questions">
+        <img src="assets/images/empty-questions.svg" alt="">
+        <strong>Nenhuma pergunta por aqui...</strong>
+        <p style="color: #737380;">
+          Faça o seu login e seja a primeira pessoa a fazer uma pergunta!
+        </p>
+      </div>
+    </ng-template>
+
 
   </main>
 
