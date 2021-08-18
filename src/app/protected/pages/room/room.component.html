@@ -1,4 +1,8 @@
-<div id="page-room">
+<div class="loading" *ngIf="loading">
+  <img src="assets/images/loading-spiner.gif" alt="">
+</div>
+
+<div id="page-room" *ngIf="!loading">
 
   <header>
     <div class="content">
@@ -19,7 +23,7 @@
 
     <form [formGroup]="roomForm" (ngSubmit)="sendQuestion()">
       <textarea placeholder="O que você quer perguntar?" formControlName="question"></textarea>
-      <div class="form-footer" *ngIf="!loading">
+      <div class="form-footer">
 
         <div class="user-info" *ngIf="isUserLoggedIn; else notLoggedIn">
           <img [src]="user.avatar" [alt]="user.name" />

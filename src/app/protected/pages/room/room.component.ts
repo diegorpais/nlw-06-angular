@@ -53,9 +53,9 @@ export class RoomComponent implements OnInit, OnDestroy {
         res => {
           this.isUserLoggedIn = !!res;
           this.checkUserOnStorage();
-          this.loading = false;
+
         },
-        error => { this.loading = false; }
+        _ => { }
       );
   }
 
@@ -112,11 +112,13 @@ export class RoomComponent implements OnInit, OnDestroy {
           }
 
           console.log('Questions: ', this.parsedQuestions);
+          this.loading = false;
 
         },
         _ => {
           AlertUtil.errorAlert('Erro ao tentar obter informações da sala.');
           this.router.navigate([RootRoutes.HOME]);
+          this.loading = false;
         }
       );
   }
