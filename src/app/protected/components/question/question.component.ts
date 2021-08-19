@@ -1,7 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { FirebaseService } from 'src/app/public/services/firebase.service';
-import { Question, AuthUser } from 'src/app/public/models';
+import { Question, AuthUser, AlertIcons } from 'src/app/public/models';
+import { AlertUtil } from 'src/app/public/utils';
 @Component({
   selector: 'app-question',
   templateUrl: './question.component.html',
@@ -27,9 +28,13 @@ export class QuestionComponent implements OnInit {
   }
 
   deleteQuestion(question: Question) {
-    if (window.confirm('Tem certeza que deseja excluir essa pergunta?')) {
-      this.firebaseService.deleteQuestion(this.roomId, question.id);
-    }
+    AlertUtil.confirmAlert('Tem certeza que deseja excluir essa pergunta?', AlertIcons.QUESTION)
+      .then(res => {
+        console.log(res);
+        if (res.isConfirmed) {
+          this.firebaseService.deleteQuestion(this.roomId, question.id);
+        }
+      });
   }
 
 }
