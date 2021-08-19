@@ -21,7 +21,13 @@
     </div>
 
     <div class="question-list" *ngIf="parsedQuestions.length > 0; else emptyQuestions">
-      <app-question [parsedQuestions]="parsedQuestions" [roomId]="roomId" [user]="user" [isAdmin]="true"></app-question>
+      <app-question
+        [parsedQuestions]="parsedQuestions"
+        [roomId]="roomId"
+        [user]="user"
+        [isAdmin]="true"
+        [isRoomClosed]="isRoomClosed"
+      ></app-question>
     </div>
 
     <ng-template #emptyQuestions>

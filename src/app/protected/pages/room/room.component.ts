@@ -24,6 +24,8 @@ export class RoomComponent implements OnInit, OnDestroy {
   roomInfo = new RoomInfo();
   roomChanges: Subscription;
 
+  isRoomClosed = false;
+
   roomForm = this.fb.group({
     question: ['']
   });
@@ -116,6 +118,11 @@ export class RoomComponent implements OnInit, OnDestroy {
 
           console.log('Questions: ', this.parsedQuestions);
           this.loading = false;
+
+          if (this.roomInfo.endedAt) {
+            this.isRoomClosed = true;
+            this.roomForm.get('question').disable();
+          }
 
         },
         _ => {

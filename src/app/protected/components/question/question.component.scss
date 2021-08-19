@@ -81,6 +81,10 @@
         }
       }
 
+      &.like-button:disabled {
+        cursor: no-drop;
+      }
+
       &:hover {
         filter: brightness(0.7);
       }

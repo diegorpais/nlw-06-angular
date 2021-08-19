@@ -22,6 +22,8 @@ export class AdminRoomComponent implements OnInit, OnDestroy {
   roomInfo = new RoomInfo();
   roomChanges: Subscription;
 
+  isRoomClosed = false;
+
   constructor(
     private firebaseService: FirebaseService,
     private router: Router,
@@ -89,6 +91,10 @@ export class AdminRoomComponent implements OnInit, OnDestroy {
 
           console.log('Questions: ', this.parsedQuestions);
           this.loading = false;
+
+          if (this.roomInfo.endedAt) {
+            this.isRoomClosed = true;
+          }
 
         },
         _ => {

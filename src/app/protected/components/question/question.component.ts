@@ -14,6 +14,8 @@ export class QuestionComponent implements OnInit {
   @Input() user: AuthUser;
   @Input() roomId: string;
   @Input() isAdmin: string;
+  @Input() isRoomClosed = false;
+
 
   constructor(
     private firebaseService: FirebaseService
@@ -21,9 +23,11 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('isAdmin: ', this.isAdmin);
+    console.log('user: ', this.user);
   }
 
   likeQuestion(question: Question) {
+    console.log('Question: ', question);
     this.firebaseService.likeQuestions(this.user, question.id, this.roomId, question.likeId);
   }
 

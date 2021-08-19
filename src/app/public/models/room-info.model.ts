@@ -3,4 +3,5 @@ export class RoomInfo {
   authorId: string;
   title: string;
   questions?: Question;
+  endedAt?: string;
 }

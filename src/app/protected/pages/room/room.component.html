@@ -20,7 +20,11 @@
     </div>
 
     <form [formGroup]="roomForm" (ngSubmit)="sendQuestion()">
-      <textarea placeholder="O que você quer perguntar?" formControlName="question"></textarea>
+      <textarea
+        placeholder="O que você quer perguntar?"
+        formControlName="question"
+        [ngClass]="{'disabled-textarea': isRoomClosed}"
+      ></textarea>
       <div class="form-footer">
 
         <div class="user-info" *ngIf="isUserLoggedIn; else notLoggedIn">
@@ -35,7 +39,11 @@
             </button>.</span>
         </ng-template>
 
-        <button class="button" type="submit" [disabled]="!isUserLoggedIn">Enviar pergunta</button>
+        <button
+          class="button"
+          type="submit"
+          [disabled]="!isUserLoggedIn || isRoomClosed"
+        >Enviar pergunta</button>
       </div>
     </form>
 
@@ -44,6 +52,7 @@
         [parsedQuestions]="parsedQuestions"
         [roomId]="roomId"
         [user]="user"
+        [isRoomClosed]="isRoomClosed"
       ></app-question>
     </div>
 

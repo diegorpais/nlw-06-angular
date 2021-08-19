@@ -63,6 +63,11 @@
         min-height: 130px;
       }
 
+      textarea:disabled{
+        background: #dbdcdd;
+        cursor: no-drop;
+      }
+
       .form-footer {
         display: flex;
         justify-content: space-between;
