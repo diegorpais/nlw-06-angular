@@ -12,12 +12,14 @@ export class QuestionComponent implements OnInit {
   @Input() parsedQuestions: Array<Question> = [];
   @Input() user: AuthUser;
   @Input() roomId: string;
+  @Input() isAdmin: string;
 
   constructor(
     private firebaseService: FirebaseService
   ) { }
 
   ngOnInit(): void {
+    console.log('isAdmin: ', this.isAdmin);
   }
 
   likeQuestion(question: Question) {

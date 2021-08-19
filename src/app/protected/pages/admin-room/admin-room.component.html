@@ -21,14 +21,14 @@
     </div>
 
     <div class="question-list" *ngIf="parsedQuestions.length > 0; else emptyQuestions">
-      <app-question [parsedQuestions]="parsedQuestions" [roomId]="roomId" [user]="user"></app-question>
+      <app-question [parsedQuestions]="parsedQuestions" [roomId]="roomId" [user]="user" [isAdmin]="true"></app-question>
     </div>
 
     <ng-template #emptyQuestions>
       <div class="empty-questions">
         <img src="assets/images/empty-questions.svg" alt="">
         <strong>Nenhuma pergunta por aqui...</strong>
-        <p style="color: #737380;">
+        <p>
           Faça o seu login e seja a primeira pessoa a fazer uma pergunta!
         </p>
       </div>
