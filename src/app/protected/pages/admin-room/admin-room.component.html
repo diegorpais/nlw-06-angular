@@ -1,0 +1,40 @@
+<app-loading *ngIf="loading"></app-loading>
+
+<div id="page-room" *ngIf="!loading">
+
+  <header>
+    <div class="content">
+      <img src="assets/images/logo.svg" alt="Letmeask" />
+      <div>
+        <app-room-code [roomCode]="roomId"></app-room-code>
+        <button class="button" type="button" (click)="backHome()">Sair da sala</button>
+        <button class="button" type="button">Encerrar sala</button>
+      </div>
+
+    </div>
+  </header>
+
+  <main>
+    <div class="room-title">
+      <h1>Sala {{title}}</h1>
+      <span *ngIf="parsedQuestions.length > 0">{{parsedQuestions.length}} pergunta(s)</span>
+    </div>
+
+    <div class="question-list" *ngIf="parsedQuestions.length > 0; else emptyQuestions">
+      <app-question [parsedQuestions]="parsedQuestions" [roomId]="roomId" [user]="user"></app-question>
+    </div>
+
+    <ng-template #emptyQuestions>
+      <div class="empty-questions">
+        <img src="assets/images/empty-questions.svg" alt="">
+        <strong>Nenhuma pergunta por aqui...</strong>
+        <p style="color: #737380;">
+          Faça o seu login e seja a primeira pessoa a fazer uma pergunta!
+        </p>
+      </div>
+    </ng-template>
+
+
+  </main>
+
+</div>
