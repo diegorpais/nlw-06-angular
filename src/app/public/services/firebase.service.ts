@@ -152,5 +152,11 @@ export class FirebaseService {
     await this.database.list(`rooms/${roomId}/questions/${questionId}`).remove();
   }
 
+  async highlightQuestion(roomId: string, questionId: string, isHighLighted: boolean) {
+    await this.database.list(`rooms/${roomId}/questions`).update(`${questionId}`, {
+      isHighLighted: !isHighLighted,
+    })
+  }
+
 
 }

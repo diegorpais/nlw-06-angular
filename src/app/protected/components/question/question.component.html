@@ -1,4 +1,8 @@
-<div class="question" *ngFor="let question of parsedQuestions">
+<div
+  class="question"
+  [ngClass]="{'answered': question.isAnswered, 'highLighted': question.isHighLighted}"
+  *ngFor="let question of parsedQuestions"
+>
   <p>{{question.content}}</p>
   <footer>
     <div class="user-info">
@@ -28,7 +32,7 @@
           <img src="assets/images/check.svg" alt="Marcar pergunta como respondida" />
         </button>
 
-        <button type="button">
+        <button type="button" (click)="highlightQuestion(question)">
           <img src="assets/images/answer.svg" alt="Dar destaque a pergunta" />
         </button>
 

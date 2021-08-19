@@ -37,4 +37,8 @@ export class QuestionComponent implements OnInit {
       });
   }
 
+  highlightQuestion(question: Question) {
+    this.firebaseService.highlightQuestion(this.roomId, question.id, question.isHighLighted);
+  }
+
 }
