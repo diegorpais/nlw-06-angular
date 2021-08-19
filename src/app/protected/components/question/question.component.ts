@@ -26,4 +26,10 @@ export class QuestionComponent implements OnInit {
     this.firebaseService.likeQuestions(this.user, question.id, this.roomId, question.likeId);
   }
 
+  deleteQuestion(question: Question) {
+    if (window.confirm('Tem certeza que deseja excluir essa pergunta?')) {
+      this.firebaseService.deleteQuestion(this.roomId, question.id);
+    }
+  }
+
 }

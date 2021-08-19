@@ -148,5 +148,9 @@ export class FirebaseService {
     }
   }
 
+  async deleteQuestion(roomId: string, questionId: string) {
+    await this.database.list(`rooms/${roomId}/questions/${questionId}`).remove();
+  }
+
 
 }
