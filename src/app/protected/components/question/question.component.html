@@ -28,7 +28,7 @@
       </button>
 
       <ng-template #adminButtons>
-        <button type="button">
+        <button type="button" (click)="checkQuestionAsAnswered(question)">
           <img src="assets/images/check.svg" alt="Marcar pergunta como respondida" />
         </button>
 

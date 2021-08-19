@@ -155,7 +155,13 @@ export class FirebaseService {
   async highlightQuestion(roomId: string, questionId: string, isHighLighted: boolean) {
     await this.database.list(`rooms/${roomId}/questions`).update(`${questionId}`, {
       isHighLighted: !isHighLighted,
-    })
+    });
+  }
+
+  async checkQuestionAsAnswered(roomId: string, questionId: string, isAnswered: boolean) {
+    await this.database.list(`rooms/${roomId}/questions`).update(`${questionId}`, {
+      isAnswered: !isAnswered,
+    });
   }
 
 

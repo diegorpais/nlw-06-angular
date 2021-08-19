@@ -41,4 +41,8 @@ export class QuestionComponent implements OnInit {
     this.firebaseService.highlightQuestion(this.roomId, question.id, question.isHighLighted);
   }
 
+  checkQuestionAsAnswered(question: Question) {
+    this.firebaseService.checkQuestionAsAnswered(this.roomId, question.id, question.isAnswered);
+  }
+
 }
