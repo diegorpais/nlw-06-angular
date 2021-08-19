@@ -164,5 +164,11 @@ export class FirebaseService {
     });
   }
 
+  async endRoom(roomId: string) {
+    await this.database.list(`rooms`).update(`${roomId}`, {
+      endedAt: new Date()
+    });
+  }
+
 
 }

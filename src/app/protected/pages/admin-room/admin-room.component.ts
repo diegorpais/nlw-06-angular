@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { AuthUser, RoomInfo } from 'src/app/public/models';
+import { AlertIcons, AuthUser, RoomInfo } from 'src/app/public/models';
 import { FirebaseService } from 'src/app/public/services/firebase.service';
 import { AlertUtil, APP_NAME_STORAGE, RootRoutes, StorageUtil } from 'src/app/public/utils';
 
@@ -97,6 +97,15 @@ export class AdminRoomComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       );
+  }
+
+  endRoom() {
+    AlertUtil.confirmAlert('Tem certeza que deseja encerrar a sala?', AlertIcons.QUESTION)
+      .then(res => {
+        if (res.isConfirmed) {
+          this.firebaseService.endRoom(this.roomId);
+        }
+      });
   }
 
 }
