@@ -107,7 +107,7 @@ export class FirebaseService {
 
     await roomRef.push(room)
       .then((res: any) => {
-        this.router.navigate([`rooms/${res.key}`]);
+        this.router.navigate([`admin/rooms/${res.key}`]);
       })
       .catch((error) => {
         console.log(error)
