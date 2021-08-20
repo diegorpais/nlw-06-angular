@@ -39,6 +39,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.roomId = this.activatedRoute.snapshot.params['id'];
+    this.verifyState();
     this.isLoggedIn();
     this.getRoomInformation();
   }
@@ -73,6 +74,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       .then(() => {
         this.isUserLoggedIn = true;
         this.checkUserOnStorage();
+        this.redirectOwnertoAdminRoom(this.roomInfo.authorId);
       })
   }
 
@@ -92,6 +94,8 @@ export class RoomComponent implements OnInit, OnDestroy {
             return;
           }
 
+          console.log('Raw Room: ', res);
+
           res.forEach(item => {
             this.roomInfo[item.key] = item.payload.val();
           });
@@ -99,6 +103,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           this.title = this.roomInfo.title;
 
           console.log('Observable: ', this.roomInfo);
+          this.redirectOwnertoAdminRoom(this.roomInfo.authorId);
 
           if (this.roomInfo.questions) {
             this.parsedQuestions = Object.entries(this.roomInfo.questions).map(([key, value]) => {
@@ -162,6 +167,26 @@ export class RoomComponent implements OnInit, OnDestroy {
       this.roomForm.get('question').setValue('');
     }
 
+  }
+
+  redirectOwnertoAdminRoom(authorId: string) {
+    const userId = this.verifyState();
+
+    if (
+      (userId && authorId === userId) ||
+      (this.user?.id && authorId === this.user.id)
+    ) {
+      this.router.navigate([`${RootRoutes.ADMIN_ROOMS}/${this.roomId}`]);
+      return;
+    }
+
+  }
+
+  verifyState(): string {
+    const state = window.history.state;
+    if (state.userId) {
+      return state.userId;
+    }
   }
 
 }

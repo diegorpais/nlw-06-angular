@@ -61,7 +61,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.router.navigate([`${RootRoutes.ROOMS}/${idClass}`]);
+    this.lookingForUserInStorage();
+
+    this.router.navigate([`${RootRoutes.ROOMS}/${idClass}`], { state: { userId: this.user?.id ? this.user.id : undefined } });
   }
 
 }
