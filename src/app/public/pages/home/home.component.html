@@ -16,7 +16,7 @@
         <input type="text" placeholder="Digite o codigo da sala" formControlName="idClass">
         <button class="button" type="submit" [disabled]="!homeForm.value.idClass"> Entrar na sala </button>
         <p *ngIf="user">
-          Bem vindo de volta, <strong>{{user.name}}</strong>.
+          Bem vindo de volta, <strong>{{getFirstAndlastname(user.name)}}</strong>.
           <a (click)="signOut()">Fazer Logoff</a>
         </p>
       </form>

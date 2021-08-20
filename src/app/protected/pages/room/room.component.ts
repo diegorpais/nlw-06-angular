@@ -4,7 +4,7 @@ import { FormBuilder } from '@angular/forms';
 
 import { FirebaseService } from 'src/app/public/services/firebase.service';
 import { StorageUtil, APP_NAME_STORAGE, RootRoutes, AlertUtil } from 'src/app/public/utils';
-import { AuthUser, RoomInfo } from 'src/app/public/models';
+import { AuthUser, FirebaseAnswers, RoomInfo } from 'src/app/public/models';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -94,15 +94,12 @@ export class RoomComponent implements OnInit, OnDestroy {
             return;
           }
 
-          console.log('Raw Room: ', res);
-
           res.forEach(item => {
             this.roomInfo[item.key] = item.payload.val();
           });
 
           this.title = this.roomInfo.title;
 
-          console.log('Observable: ', this.roomInfo);
           this.redirectOwnertoAdminRoom(this.roomInfo.authorId);
 
           if (this.roomInfo.questions) {
@@ -111,6 +108,7 @@ export class RoomComponent implements OnInit, OnDestroy {
                 id: key,
                 content: value.content,
                 author: value.author,
+                answer: this.getAnswer(value.answer),
                 isHighLighted: value.isHighLighted,
                 isAnswered: value.isAnswered,
                 likeCount: Object.values(value.likes ? value.likes : {}).length,
@@ -121,7 +119,6 @@ export class RoomComponent implements OnInit, OnDestroy {
             this.parsedQuestions.reverse();
           }
 
-          console.log('Questions: ', this.parsedQuestions);
           this.loading = false;
 
           if (this.roomInfo.endedAt) {
@@ -186,6 +183,20 @@ export class RoomComponent implements OnInit, OnDestroy {
     const state = window.history.state;
     if (state.userId) {
       return state.userId;
+    }
+  }
+
+  getAnswer(answer: FirebaseAnswers) {
+    if (answer) {
+      const parsedAnswer = Object.entries(answer).map(([key, value]) => {
+        return {
+          id: key,
+          content: value.content,
+          author: value.author,
+        }
+      });
+
+      return parsedAnswer[0];
     }
   }
 

@@ -29,4 +29,23 @@ export class AlertUtil {
     });
   }
 
+  static async answerAlert() {
+    const { value: text } = await Swal.fire({
+      input: 'textarea',
+      inputLabel: 'Resposta',
+      inputPlaceholder: 'Digite sua resposta aqui...',
+      inputAttributes: {
+        'aria-label': 'Digite sua resposta aqui'
+      },
+      showCancelButton: true,
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Enviar',
+      backdrop: false
+    });
+
+    if (text) {
+      return text;
+    }
+  }
+
 }

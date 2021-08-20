@@ -8,7 +8,7 @@ import { User } from '@firebase/auth-types';
 
 import firebase from 'firebase/app';
 
-import { AuthUser, FirebaseQuestions } from 'src/app/public/models';
+import { AuthUser, FirebaseAnswers, FirebaseQuestions } from 'src/app/public/models';
 import { StorageUtil, AlertUtil, APP_NAME_STORAGE, RootRoutes } from 'src/app/public/utils';
 
 @Injectable({
@@ -110,7 +110,6 @@ export class FirebaseService {
         this.router.navigate([`admin/rooms/${res.key}`]);
       })
       .catch((error) => {
-        console.log(error)
         AlertUtil.errorAlert('Não foi possível criar a sala com sua conta Google.')
       })
 
@@ -132,6 +131,21 @@ export class FirebaseService {
         })
         .catch(_ => {
           AlertUtil.errorAlert('Não foi possível enviar a sua pergunta.')
+        })
+
+    });
+  }
+
+  async sendAnswers(answer: FirebaseAnswers, roomId: string, questionId: string) {
+    const roomRef = this.database.list(`rooms/${roomId}/questions/${questionId}/answer`);
+
+    return new Promise(async (resolve) => {
+      await roomRef.push(answer)
+        .then(res => {
+          resolve(res.key);
+        })
+        .catch(_ => {
+          AlertUtil.errorAlert('Não foi possível responder a pergunta.')
         })
 
     });

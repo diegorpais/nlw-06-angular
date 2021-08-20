@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { AlertIcons, AuthUser, RoomInfo } from 'src/app/public/models';
+import { AlertIcons, AuthUser, FirebaseAnswers, RoomInfo } from 'src/app/public/models';
 import { FirebaseService } from 'src/app/public/services/firebase.service';
 import { AlertUtil, APP_NAME_STORAGE, RootRoutes, StorageUtil } from 'src/app/public/utils';
 
@@ -71,14 +71,13 @@ export class AdminRoomComponent implements OnInit, OnDestroy {
 
           this.title = this.roomInfo.title;
 
-          console.log('Observable: ', this.roomInfo);
-
           if (this.roomInfo.questions) {
             this.parsedQuestions = Object.entries(this.roomInfo.questions).map(([key, value]) => {
               return {
                 id: key,
                 content: value.content,
                 author: value.author,
+                answer: this.getAnswer(value.answer),
                 isHighLighted: value.isHighLighted,
                 isAnswered: value.isAnswered,
                 likeCount: Object.values(value.likes ? value.likes : {}).length,
@@ -89,7 +88,6 @@ export class AdminRoomComponent implements OnInit, OnDestroy {
             this.parsedQuestions.reverse();
           }
 
-          console.log('Questions: ', this.parsedQuestions);
           this.loading = false;
 
           if (this.roomInfo.endedAt) {
@@ -112,6 +110,20 @@ export class AdminRoomComponent implements OnInit, OnDestroy {
           this.firebaseService.endRoom(this.roomId);
         }
       });
+  }
+
+  getAnswer(answer: FirebaseAnswers) {
+    if (answer) {
+      const parsedAnswer = Object.entries(answer).map(([key, value]) => {
+        return {
+          id: key,
+          content: value.content,
+          author: value.author,
+        }
+      });
+
+      return parsedAnswer[0];
+    }
   }
 
 }

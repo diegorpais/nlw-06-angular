@@ -66,4 +66,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate([`${RootRoutes.ROOMS}/${idClass}`], { state: { userId: this.user?.id ? this.user.id : undefined } });
   }
 
+  getFirstAndlastname(name: string) {
+    if (name) {
+      const fullName = name.split(' ');
+      const firstAndLastName = fullName.length > 1 ? fullName[0] + ' ' + fullName[fullName.length - 1] : fullName[0];
+      return firstAndLastName;
+    }
+  }
+
 }
